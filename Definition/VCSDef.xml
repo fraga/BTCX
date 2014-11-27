@@ -34,6 +34,8 @@
     <ObjectName value="&lt;Workflow:d+" />
   </UnwantedObjectNames>
   <AdditionalFolders />
-  <Models />
+  <Models>
+    <Model folder="BTCX" description="BTCX" />
+  </Models>
   <PluginSettings />
 </VCSParameters>
