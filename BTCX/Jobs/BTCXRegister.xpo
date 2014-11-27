@@ -1,0 +1,22 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: JOB
+
+; Microsoft Dynamics AX Job: BTCXRegister unloaded
+; --------------------------------------------------------------------------------
+  JOBVERSION 1
+  
+  SOURCE #BTCXRegister
+    #static void BTCXRegister(Args _args)
+    #{
+    #    ExchangeRateProviderRegistration reg = ExchangeRateProviderRegistration::construct();
+    #    reg.addProviderForRegistration('E4DFF9FC-9432-459E-9F8D-71B79315727A');
+    #}
+  ENDSOURCE
+  PROPERTIES
+    Origin              #{5B4B2FF3-6A3E-425E-AA52-23E3F5D45E75}
+  ENDPROPERTIES
+  
+
+***Element: END
