@@ -1,0 +1,118 @@
+﻿Exportfile for AOT version 1.0 or later
+Formatversion: 1
+
+***Element: CLS
+
+; Microsoft Dynamics AX Class: ExchangeRateProviderBTCX unloaded
+; --------------------------------------------------------------------------------
+  CLSVERSION 1
+  
+  CLASS #ExchangeRateProviderBTCX
+    PROPERTIES
+      Name                #ExchangeRateProviderBTCX
+      Extends             #ExchangeRateProvider
+      Origin              #{61BB4C46-29C9-469F-9704-878D9D83EAAE}
+    ENDPROPERTIES
+    
+    METHODS
+      SOURCE #classDeclaration
+        #[ExchangeRateProviderAttribute(),
+        #ExchangeRateProviderIdAttribute('E4DFF9FC-9432-459E-9F8D-71B79315727A')]
+        #class ExchangeRateProviderBTCX extends ExchangeRateProvider
+        #{
+        #    #define.serviceurl('serviceurl')
+        #    #define.servicevars('servicevars')
+        #    #define.servicetimeout('serviceTimeout')
+        #}
+      ENDSOURCE
+      SOURCE #getConfigurationDefaults
+        #public ExchangeRateProviderConfigDefaults getConfigurationDefaults()
+        #{
+        #    ExchangeRateProviderConfigDefaults ret = ExchangeRateProviderConfigDefaults::construct();
+        #    return ret;
+        #}
+      ENDSOURCE
+      SOURCE #getExchangeRates
+        #public ExchangeRateResponse getExchangeRates(ExchangeRateRequest _exchangeRateRequest)
+        #{
+        #    ExchangeRateResponse                response = ExchangeRateResponse::construct();
+        #    ExchangeRateResponseCurrencyPair    responsePair = ExchangeRateResponseCurrencyPair::construct();
+        #    ExchangeRateResponseExchangeRate    responseExchangeRate = ExchangeRateResponseExchangeRate::construct();
+        #
+        #    System.Net.WebRequest               request;
+        #    System.Net.WebResponse              responseReq;
+        #    System.IO.StreamReader              streamREader;
+        #    System.String                       url, currentLine;
+        #    str                                 currentLinexpp, urlxpp;
+        #
+        #    responsePair.parmFromCurrency('USD');
+        #    responsePair.parmToCurrency('BTC');
+        #    responsePair.parmExchangeRateDisplayFactor(ExchangeRateDisplayFactor::Thousand);
+        #
+        #    responseExchangeRate.parmValidFrom(today());
+        #
+        #    urlxpp = 'http://blockchain.info/tobtc?currency=USD&value=1000';
+        #    url = urlxpp;
+        #
+        #    try
+        #    {
+        #        request = System.Net.WebRequest::CreateHttp(url);
+        #        responseReq = request.GetResponse();
+        #        streamReader = new System.IO.StreamReader(responseReq.GetResponseStream());
+        #
+        #        if(!streamREader.get_EndOfStream())
+        #        {
+        #            currentLine = streamREader.ReadLine();
+        #            currentLinexpp = currentLine;
+        #        }
+        #
+        #        responseExchangeRate.parmExchangeRate(str2num(currentLinexpp));
+        #        responsePair.addExchangeRate(responseExchangeRate);
+        #        response.addOrUpdateCurrencyPair(responsePair);
+        #
+        #        if(streamREader)
+        #            streamREader.Close();
+        #
+        #        if(responseReq)
+        #            responseReq.Close();
+        #    }
+        #    catch
+        #    {
+        #        if(streamREader)
+        #            streamREader.Close();
+        #
+        #        if(responseReq)
+        #            responseReq.Close();
+        #    }
+        #
+        #    return response;
+        #}
+      ENDSOURCE
+      SOURCE #getName
+        #public ExchangeRateProviderName getName()
+        #{
+        #    return "BTCX Bitcoin Exchange provider";
+        #}
+      ENDSOURCE
+      SOURCE #getProviderId
+        #public ExchangeRateProviderId getProviderId()
+        #{
+        #    return 'E4DFF9FC-9432-459E-9F8D-71B79315727A';
+        #}
+      ENDSOURCE
+      SOURCE #getSupportedOptions
+        #public ExchangeRateProviderSupportedOptions getSupportedOptions()
+        #{
+        #    ExchangeRateProviderSupportedOptions supportedOptions = ExchangeRateProviderSupportedOptions::construct();
+        #
+        #    supportedOptions.parmDoesSupportSpecificCurrencyPairs(false);
+        #    supportedOptions.parmDoesSupportSpecificDates(false);
+        #    supportedOptions.parmFixedBaseIsoCurrency(''); //AS Bitcon does not have one yet
+        #
+        #    return supportedOptions;
+        #}
+      ENDSOURCE
+    ENDMETHODS
+  ENDCLASS
+
+***Element: END
